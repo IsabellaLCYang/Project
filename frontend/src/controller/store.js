@@ -5,6 +5,7 @@ import buyerSlice from "./buyerSlice";
 import sellerSlice from "./sellerSlice";
 import orderSlice from "./orderSlice";
 import loginSlice from "./login/reducer";
+
 export default configureStore({
   reducer: {
     buyer: buyerSlice,

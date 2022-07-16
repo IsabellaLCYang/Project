@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import Product from "../model/product";
 import { fetchAPI } from "../api/client";
 
 export const postNewProduct = createAsyncThunk('/product/post', async function(data) {
@@ -26,8 +25,7 @@ const productSlice = createSlice({
     title: "",
     price: 0,
     tags: [],
-    features: {},
-    buyerProductList: []
+    features: {}
   },
   reducers: {
     setName: (state, action) => {state.name = action.payload},

@@ -6,9 +6,9 @@ import { addProduct } from "../../controller/cartSlice";
 
 export default function Product(props) {
     let dispatch = useDispatch();
-
+    console.log(props.data);
     return (
-        <Card variant="outlined" onclick={() => dispatch(addProduct(props.data))}>
+        <Card variant="outlined" onClick={() => {console.log("22222");dispatch(addProduct(props.data));}}>
              <CardActionArea>
                 <CardContent>
                     <Marginer margin="40px" />

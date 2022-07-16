@@ -10,10 +10,6 @@ import { useState } from "react";
 import "../../css/orderTracking.css";
 import { changeStatusAsync, getOrderAsync } from '../cart/cartThunks';
 
-import AlertPopup from './alertPopup';
-
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 
 function SellerOrderTracking(props) {
   const [finalClickInfo, setFinalClickInfo] = useState(null);

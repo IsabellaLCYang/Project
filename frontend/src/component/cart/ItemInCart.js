@@ -12,7 +12,7 @@ function ItemInCart(props) {
     const originalQuantity = props.item.quantity;
     const [quantity, setQuantity] = useState(originalQuantity)
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     function handleChangeInQuantity(newValue) {
         setQuantity(newValue)

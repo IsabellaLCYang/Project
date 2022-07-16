@@ -17,9 +17,9 @@ const INITIAL_STATE = {
   orderHistory:mockBuyer.orderHistory,
   pwd: null,
   error: null,
-  displayProducts: [],
+  displayProducts: []
 };
-
+ 
 const userSlice = createSlice({
   name: "buyer",
   initialState: INITIAL_STATE,

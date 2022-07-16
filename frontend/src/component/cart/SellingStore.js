@@ -1,5 +1,3 @@
-import { Container } from "@mui/system";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import ItemInCart from './ItemInCart';
 import "../../css/cart.css";

@@ -13,17 +13,22 @@ import SellingStore from './SellingStore';
 
 import { useDispatch } from 'react-redux';
 import { submitOrderAsync } from './cartThunks';
-
+import { useEffect } from "react";
 
 function Cart() {
   let cart = useSelector(getCart);
+  console.log(cart);
+  const dispatch = useDispatch();
+  /*
+  useEffect(() => {
+    let cart = useSelector(getCart);
+}, []);
+*/
 
   let uniqueStoreNames = [... new Set(cart?.map(product => product.soldBy))];
   let storeNames = Array.from(uniqueStoreNames).sort();
 
   console.log(storeNames)
-
-  const dispatch = useDispatch()
 
   const renderedSellingStores = []
   for (let i in storeNames) {

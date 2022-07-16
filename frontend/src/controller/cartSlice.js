@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { mockBuyer } from "../utils/mockBuyer";
 import { REQUEST_STATE } from './utils';
 import { submitOrderAsync} from '../component/cart/cartThunks';
 
@@ -25,12 +24,6 @@ const INITIAL_STATE = {
   addProductToCart: REQUEST_STATE.IDLE
 }
 
-// const INITIAL_STATE = {
-//   cart: mockBuyer.cart,
-//   submitOrder: REQUEST_STATE.IDLE,
-//   addProductToCart: REQUEST_STATE.IDLE
-// }
-
 const cartSlice = createSlice({
   name: "cart",
   initialState: INITIAL_STATE,
@@ -47,7 +40,7 @@ const cartSlice = createSlice({
       state.cart.sort((a,b) => a.name.localeCompare(b.name));
       }
     },
-    deleteProduct(state,action) {
+    deleteProduct(state, action) {
       let productToChange = state.cart.find(p => p.id === action.payload.id)
       state.cart.sum -= productToChange.price * productToChange.quantity
       state.cart = state.cart.filter(p => p.id !== action.payload.id)
@@ -57,7 +50,7 @@ const cartSlice = createSlice({
       if (product !== undefined) {
         const index = state.cart.indexOf(product);
         ++state.cart[index].quantity;
-        state.cart.sum += state.cart[index].price;
+        state.sum += state.cart[index].price;
       } else {
         state.cart.push({
           id: action.payload.uuid,
@@ -65,7 +58,7 @@ const cartSlice = createSlice({
           soldBy: action.payload.soldBy,
           price: 0,
           quantity: 1});
-        state.cart.sum += 0;
+        state.sum += 0;
       }
     }
   },
@@ -85,7 +78,7 @@ const cartSlice = createSlice({
     })
 
 }
-})
+});
 
 export const { updateQuantity, deleteProduct, addProduct } =
   cartSlice.actions;
