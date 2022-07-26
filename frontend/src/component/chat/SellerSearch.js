@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/system";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,16 +13,23 @@ import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
 import ChatIcon from "@mui/icons-material/Chat";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+
+import "react-chat-elements/dist/main.css";
+import { MessageList, Input, Button } from "react-chat-elements";
+
 const socket = io.connect("http://localhost:8888");
 function SellerSearch(prop) {
   socket.emit("join_room", prop.self.email);
   const [open, setOpen] = React.useState(false);
-
   // const theme = useTheme();
   // const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const handleClose = () => {
     setOpen(false);
     // socket.disconnect();
+    setMsgUnread(false);
+    setMessageReceived([]);
   };
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,8 +45,9 @@ function SellerSearch(prop) {
     socket.connect();
     socket.on("receive_message", (data) => {
       let tempEle = {
-        user: data.userName,
-        message: data.message,
+        position: "left",
+        type: "text",
+        text: data.message,
       };
       setMessageReceived((oldArray) => [...oldArray, tempEle]);
       setMsgUnread(true);
@@ -54,8 +62,9 @@ function SellerSearch(prop) {
         message,
       });
       let tempEle = {
-        user: prop.self.firstName,
-        message: message,
+        position: "right",
+        type: "text",
+        text: message,
       };
       setMessageReceived((oldArray) => [...oldArray, tempEle]);
     }
@@ -80,43 +89,54 @@ function SellerSearch(prop) {
       <Box>
         <Dialog
           // fullScreen={fullScreen}
-          maxWidth="md"
+          maxWidth="sm"
+          fullWidth
           open={open}
           onClose={handleClose}
           aria-labelledby="responsive-dialog-title"
         >
-          <DialogTitle id="responsive-dialog-title">{"Chat "}</DialogTitle>
-          <DialogContent>
-            {messageReceived.map((i) => {
-              if (i.user === prop.self.firstName) {
-                return (
-                  <DialogContentText sx={{ textAlign: "left" }}>
-                    {i.user} : {i.message}
-                  </DialogContentText>
-                );
-              } else {
-                return (
-                  <DialogContentText sx={{ textAlign: "right" }}>
-                    {i.user} : {i.message}
-                  </DialogContentText>
-                );
-              }
-            })}
+          <DialogTitle id="responsive-dialog-title">
+            {"Chat Room"}
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+
+          <DialogContent dividers>
+            <MessageList
+              className="message-list"
+              lockable={true}
+              toBottomHeight={"100%"}
+              dataSource={messageReceived}
+            />
           </DialogContent>
+
           <DialogActions>
-            <TextField
-              fullWidth
-              variant="standard"
+            <Input
+              placeholder="Type here..."
+              multiline={true}
               onChange={(e) => {
                 setMessage(e.target.value);
               }}
+              rightButtons={
+                <Button
+                  type="outlined"
+                  color="white"
+                  backgroundColor="black"
+                  text="Send"
+                  onClick={handleSent}
+                />
+              }
             />
-            <Button autoFocus onClick={handleSent}>
-              Send
-            </Button>
-            <Button onClick={handleClose} autoFocus>
-              Close
-            </Button>
           </DialogActions>
         </Dialog>
       </Box>

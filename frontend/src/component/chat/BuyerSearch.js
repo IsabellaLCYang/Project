@@ -1,12 +1,10 @@
 import React from "react";
 import { Box } from "@mui/system";
-import Paper from "@mui/material/Paper";
-import Input from "@mui/material/Input";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Avatar, TextField } from "@mui/material";
-import Button from "@mui/material/Button";
+
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,7 +16,10 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
-
+import "react-chat-elements/dist/main.css";
+import { MessageBox, MessageList, Input, Button } from "react-chat-elements";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 const socket = io.connect("http://localhost:8888");
 function sleep(delay = 0) {
   return new Promise((resolve) => {
@@ -52,8 +53,7 @@ function BuyerSearch(prop) {
     setOpen(false);
     socket.emit("send_message", {
       room: chatTarget.email,
-      user: prop.self.firstName,
-      message: "Leave the Room",
+      message: prop.self.firstName + " just leave the room",
     });
     socket.disconnect();
     setMessageReceived([]);
@@ -101,10 +101,15 @@ function BuyerSearch(prop) {
     try {
       socket.emit("join_room", data.email);
       socket.emit("send_message", {
-        room: chatTarget.email,
-        user: prop.self.firstName,
-        message: "Enter the Room",
+        room: data.email,
+        message: prop.self.firstName + " just enter the room",
       });
+      let tempEle = {
+        position: "right",
+        type: "text",
+        text: "Join the room ",
+      };
+      setMessageReceived((oldArray) => [...oldArray, tempEle]);
     } catch (err) {
       console.log(err);
     }
@@ -117,8 +122,9 @@ function BuyerSearch(prop) {
         message,
       });
       let tempEle = {
-        user: prop.self.firstName,
-        message: message,
+        position: "right",
+        type: "text",
+        text: message,
       };
       setMessageReceived((oldArray) => [...oldArray, tempEle]);
     }
@@ -140,12 +146,14 @@ function BuyerSearch(prop) {
   useEffect(() => {
     socket.on("receive_message", (data) => {
       let tempEle = {
-        user: data.userName,
-        message: data.message,
+        position: "right",
+        type: "text",
+        text: data.message,
       };
       setMessageReceived((oldArray) => [...oldArray, tempEle]);
     });
   }, []);
+
   return (
     <Box>
       <Autocomplete
@@ -186,51 +194,53 @@ function BuyerSearch(prop) {
       <Box>
         <Dialog
           // fullScreen={fullScreen}
-          maxWidth="md"
+          maxWidth="sm"
+          fullWidth
           open={open}
           onClose={handleClose}
-          aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
             {chatTarget === null
               ? "None"
-              : "Chat With " +
-                chatTarget.firstName +
-                " " +
-                chatTarget.lastName}{" "}
+              : "Chat With " + chatTarget.firstName + " " + chatTarget.lastName}
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
           </DialogTitle>
-          <DialogContent>
-            {messageReceived.map((i) => {
-              if (i.user === prop.self.firstName) {
-                return (
-                  <DialogContentText sx={{ textAlign: "left" }}>
-                    {i.user} : {i.message}
-                  </DialogContentText>
-                );
-              } else {
-                return (
-                  <DialogContentText sx={{ textAlign: "right" }}>
-                    {i.user} : {i.message}
-                  </DialogContentText>
-                );
-              }
-            })}
+          <DialogContent dividers>
+            <MessageList
+              className="message-list"
+              lockable={true}
+              toBottomHeight={"100%"}
+              dataSource={messageReceived}
+            />
           </DialogContent>
           <DialogActions>
-            <TextField
-              fullWidth
-              variant="standard"
+            <Input
+              placeholder="Type here..."
+              multiline={true}
               onChange={(e) => {
                 setMessage(e.target.value);
               }}
+              rightButtons={
+                <Button
+                  type="outlined"
+                  color="white"
+                  backgroundColor="black"
+                  text="Send"
+                  onClick={handleSent}
+                />
+              }
             />
-
-            <Button autoFocus onClick={handleSent}>
-              Send
-            </Button>
-            <Button onClick={handleClose} autoFocus>
-              Close
-            </Button>
           </DialogActions>
         </Dialog>
       </Box>
@@ -250,5 +260,21 @@ function BuyerSearch(prop) {
     </Box>
   );
 }
-
+const chatBotPocData = [
+  {
+    position: "right",
+    type: "text",
+    text: "Name:\nNW 1st Floor\n\nPurpose:  \nHome to the Sales, Customer Success and Partnership teams\n\nMeeting Rooms:\n Zugspitze / BER-1-NW-Zugspitze-MR (1) [Phone]\n\nMount Fuji / BER-1-NW-Mount Fuji-MR (1) [Phone]\n\nMont Blanc / BER-1-NW-Mont Blanc-MR (4) [Zoom]\n\nKilimanjaro / BER-1-NW-Kilimanjaro-MR (4) [Zoom]\n\nK2 / BER-1-NW-K2-MR (4) [Zoom]\n\nAmenities: \nKitchen - Microwave, filter coffee machine, oven, dishwasher available\n\nWater fountain from Clage - provides cold still, sparkling and boiling water.\n\nBins - Please separate your trash as indicated.\n\nCrates storage - for you to put your empty bottles.\n\nOpen and secluded lounge areas.\n\nShelves, whiteboards.\n\nWardrobe is part of the furniture near the kitchen.\n\n3 Standing desks near Mount Fuji and Zugspitze to be shared.",
+  },
+  {
+    position: "left",
+    type: "text",
+    text: "Hi this is a message from Bot",
+  },
+  {
+    position: "left",
+    type: "text",
+    text: "Hi this is a message from Bot",
+  },
+];
 export default BuyerSearch;
