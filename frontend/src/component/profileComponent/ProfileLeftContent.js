@@ -16,10 +16,10 @@ const containerBoxStyle = {
   flexGrow: 1,
   borderRadius: "19px",
   backgroundColor: "white",
-  width: "18vw",
+  width: "100%",
   height: "auto",
   margin: "5vw",
-  paddingBottom: "20vh",
+  paddingBottom: "15vh",
   boxShadow: "0 0 2px rgb(20 20 20 / 50%)",
 };
 const containerBoxStyle_smaller = {
