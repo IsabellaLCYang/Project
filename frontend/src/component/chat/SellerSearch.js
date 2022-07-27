@@ -53,6 +53,7 @@ function SellerSearch(prop) {
       setMsgUnread(true);
     });
   }, []);
+  const inputReferance = React.createRef();
 
   const handleSent = () => {
     if (message !== "") {
@@ -68,9 +69,11 @@ function SellerSearch(prop) {
       };
       setMessageReceived((oldArray) => [...oldArray, tempEle]);
     }
+    inputReferance.current.value = "";
   };
-  console.log(socket);
-
+  const inputClear = () => {
+    setMessage("");
+  };
   return (
     <>
       {!MsgUnread && (
@@ -122,6 +125,7 @@ function SellerSearch(prop) {
 
           <DialogActions>
             <Input
+              referance={inputReferance}
               placeholder="Type here..."
               multiline={true}
               onChange={(e) => {
