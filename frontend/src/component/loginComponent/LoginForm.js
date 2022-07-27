@@ -215,8 +215,8 @@ function LoginForm(prop) {
         <div id="googleSignIn"></div>
         <Marginer direction="vertical" margin="2vh" />
       </SmallSpan>
-      <IconButton>
-        <ArrowBackIcon onClick={() => navigate("../")} />
+      <IconButton onClick={() => navigate("../")}>
+        <ArrowBackIcon />
       </IconButton>
     </BoxContainer>
   );

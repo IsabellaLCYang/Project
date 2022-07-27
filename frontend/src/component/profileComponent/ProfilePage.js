@@ -10,22 +10,15 @@ function ProfilePage() {
   const [Controller, setController] = useState("personalInformation");
   return (
     <Container maxWidth="xl" className="dashboard">
-      {/* <Box sx={{ flexGrow: 1 }}> */}
-
-      <Grid container spacing={1} sx={{ marginTop: "1vh" }}>
-        <Grid
-          item
-          lg={4}
-          md={3}
-          sx={{ marginLeft: "-2vw", marginTop: "-5vh" }}
-        >
+      <Grid container spacing={0}>
+        <Grid item lg={3} md={6} sm={12} sx={{ marginTop: "-5vh" }}>
           <ProfileLeftContent
             ControllerName={Controller}
             ControllerFunction={setController}
           />
         </Grid>
 
-        <Grid item lg={8} md={3} sx={{ marginTop: "-5vh" }}>
+        <Grid item sx={{ marginTop: "-5vh" }}>
           {Controller === "" && <ProfileContent />}
           {Controller === "personalInformation" && <ProfileContent />}
           {/* {Controller === "Payment" && <PaymentContent />} */}
