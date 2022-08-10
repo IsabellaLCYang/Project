@@ -75,9 +75,12 @@ Our envision includes further integration with payment services like Paypal and 
 - Lichuan(Isabella) Yang
 > I designed and built the wishlist feature which enables users to receive instant email notification once wishlisted items have been restocked using NodeMailer. In addition, I implemented Drag & Drop to allow image uploads. Furthermore, I created the UI for cart and order tracking as well as sending/handling requests to backend based on user actions.
 - Qintu(Quinn) Tao
-> ...
+> - Implemented product display & editing page, from frontend UI to backend routers and schemas. 
+> - Built the image backend schemas and routers.
+> - Wrote the product searching functionality for both sellers and buyers.
 
 
 ### Sketch 
 ![Rough_Sketch_Prototype.jpg](./doc/Rough_Sketch_Prototype.jpg)
+
 
